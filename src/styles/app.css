@@ -1,0 +1,129 @@
+.app {
+  position: absolute;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.app .content {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 80%;
+  margin-top: -10px;
+  padding: 10px;
+  background-color: #f1f1f1;
+}
+
+.app .dropContainer {
+  display: inline-block;
+  overflow: scroll;
+  width: 100%;
+  height: 100%;
+  margin-top: -5px;
+  border: 5px dotted #d4d4d4;
+}
+
+.app .fileText {
+  text-align: center;
+  font-size: 32px;
+}
+
+.app .imgFile {
+  display: inline-block;
+  width: 150px;
+}
+
+.app .fileDrag {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #222222cc;
+}
+
+.app .header {
+  display: inline-block;
+  width: 100%;
+  height: 20%;
+
+  background-color: #dadada;
+}
+
+.app table {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  margin-bottom: 20px;
+  border: 1px solid #9e9e9e;
+}
+
+.app table td {
+  padding: 20px;
+  border-bottom: 1px solid #9e9e9e;
+  border-right: 1px solid #9e9e9e;
+}
+
+.app table td:nth-child(1) {
+  padding: 10px 8px 10px 8px;
+}
+
+.app table tr:nth-child(1) td {
+  padding: 0px 10px 0px 10px;
+  text-align: center;
+  background-color: #afafaf;
+  color: #ebebeb;
+  font-weight: bold;
+}
+
+.app table tr:nth-child(2n) {
+  background-color: #e2e2e2;
+}
+
+.app table td:nth-child(1) {
+  background-color: #afafaf;
+  color: #ebebeb;
+  font-weight: bold;
+}
+
+.app .readCell {
+  width: 100px;
+}
+
+.app .download {
+  width: 200px;
+  height: 50px;
+
+  margin-left: 20px;
+}
+
+.app .fileInput {
+  margin-left: -100px;
+}
+
+.app .sheets {
+  position: absolute;
+  bottom: 0px;
+
+}
+
+.app .sheet {
+  top: -6px;
+
+  border-left: 1px solid #b3b3b3;
+  border-bottom: 1px solid #b3b3b3;
+  border-right: 1px solid #b3b3b3;
+
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 2px 2px 3px #505050;
+
+  margin-bottom: 10px;
+}
+
+.app .emptySheet {
+  font-size: 50px;
+  font-weight: bold;
+  border: 2px solid #b3b3b3;
+}
