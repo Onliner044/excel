@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
+import { Menu, MenuItem, Button } from '@material-ui/core';
 import XLSX, { utils } from 'xlsx';
 import './styles/app.css';
-import { getDataSheet, createSheets } from './helpers/wordbookFunctions';
+import { getDataSheet, createSheets, isEqual } from './helpers/wordbookFunctions';
 import images from './helpers/images';
 import Cell from './containers/Cell';
 import { readFileRequest } from './helpers/saga/readFile';
@@ -20,7 +21,6 @@ class App extends Component {
     super(props);
 
     this.fileInput = React.createRef();
-    this.downloadInput = React.createRef();
 
     this.startContent = (
       <div className="d-table w-100 h-100 fileText">
@@ -30,6 +30,7 @@ class App extends Component {
     this.state = {
       isFileDrag: false,
       isActiveDownload: false,
+      isOpenMenu: false,
       sheetName: null,
     };
   }
@@ -40,6 +41,10 @@ class App extends Component {
   onInput = () => {
     const { readFile } = this.props;
     const file = this.fileInput.current.files[0];
+
+    this.setState(() => ({
+      sheetName: null,
+    }));
 
     if (!file) {
       return;
@@ -72,6 +77,8 @@ class App extends Component {
    * @param {object} e e
    */
   onDrop = (e) => {
+    console.log(this.fileInput.current);
+    
     this.fileInput.current.files = e.dataTransfer.files;
     e.preventDefault();
     this.onDragLeave();
@@ -116,6 +123,35 @@ class App extends Component {
     }));
   }
 
+  /**
+   * @return {void} openMenu
+   */
+  openMenu = () => {
+    const { customWorkbook, initialWorkbook, setActiveDownload } = this.props;
+
+    if (isEqual(customWorkbook, initialWorkbook)) {
+      this.setActiveDownload(false);
+    } else {
+      this.setActiveDownload(true);
+    }
+
+    this.setState(() => ({
+      isOpenMenu: true,
+    }));
+  }
+
+  /**
+   * @return {void} closeMenu
+   */
+  closeMenu = () => {
+    this.setState(() => ({
+      isOpenMenu: false,
+    }));
+  }
+
+  /**
+   * @return {void} show drag zone
+   */
   showDragZone = () => {
     const { isFileDrag } = this.state;
 
@@ -137,6 +173,10 @@ class App extends Component {
     return null;
   }
 
+  /**
+   * @param {event} e e
+   * @return {void} show sheet
+   */
   showSheet = (e) => {
     const name = e.target.attributes.name.value;
     this.setState(() => ({
@@ -193,7 +233,6 @@ class App extends Component {
                           id={`${encodeWidth}${encodeHeight}`}
                           sheetName={currentSheetName}
                           value={value}
-                          setActiveDownload={this.setActiveDownload}
                         />
                       </Fragment>
                     );
@@ -251,7 +290,7 @@ class App extends Component {
    * @return {void} render
    */
   render() {
-    const { isActiveDownload } = this.state;
+    const { isActiveDownload, isOpenMenu } = this.state;
 
     return (
       <div
@@ -264,18 +303,29 @@ class App extends Component {
             <div className="d-table-cell center">
               <ul className="list-unstyled">
                 <li className="d-inline-block float-left">
-                  <input
+                  <Button
                     className="btn btn-info download"
-                    onClick={this.onDownload}
-                    type="button"
-                    defaultValue="Скачать"
-                    ref={this.downloadInput}
-                    disabled={!isActiveDownload}
-                  />
+                    variant="contained"
+                    onClick={this.openMenu}
+                  >
+                    Файл
+                  </Button>
+                  <Menu
+                    open={isOpenMenu}
+                    onClose={this.closeMenu}
+                  >
+                    <MenuItem onClick={this.closeMenu}>
+                      <label htmlFor="file">Открыть</label>
+                    </MenuItem>
+                    <MenuItem onClick={this.closeMenu} disabled={!isActiveDownload}>
+                      <div onClick={this.onDownload}>Скачать</div>
+                    </MenuItem>
+                  </Menu>
                 </li>
                 <li className="d-inline-block">
                   <input
-                    className="fileInput"
+                    className="d-none"
+                    id="file"
                     type="file"
                     accept=".xlsx,.xls,.csv"
                     ref={this.fileInput}

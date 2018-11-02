@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { replaceCell } from '../helpers/action/cell';
-import { isEqual } from '../helpers/wordbookFunctions';
 
 /**
  * @return {td} component
@@ -39,14 +38,6 @@ class Cell extends Component {
 
     const newValue = this.inputText.current.value;
     replaceCell(id, sheetName, newValue);
-
-    const { customWorkbook, initialWorkbook, setActiveDownload } = this.props;
-
-    if (isEqual(customWorkbook, initialWorkbook)) {
-      setActiveDownload(false);
-    } else {
-      setActiveDownload(true);
-    }
   }
 
   onEdit = () => {

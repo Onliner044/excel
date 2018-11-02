@@ -15,7 +15,7 @@ export function createSheets(customWorkbook) {
     };
 
     Object.keys(cells).forEach((key) => {
-      const value = cells[key].value;
+      const { value } = cells[key];
 
       Object.assign(data, {
         [key]: {
@@ -93,7 +93,7 @@ function parseCell(cell) {
   let name = '';
   let number = '';
 
-  for (let i = 0; i < cell.length; i++) {
+  [...Array(cell.length)].forEach((el, i) => {
     const val = cell[i];
 
     if (isNaN(+val)) {
@@ -101,7 +101,7 @@ function parseCell(cell) {
     } else {
       name += val;
     }
-  }
+  });
 
   return {
     width: utils.decode_col(number),
@@ -119,8 +119,6 @@ export function isEqual(customWorkbook, initialWorkbook) {
     const cells1 = customWorkbook[sheet].cells;
     const cells2 = initialWorkbook[sheet].cells;
 
-    console.log(cells1, cells2);
-
     const a = Object.keys(cells1).every((key) => {
       let value1;
       let value2;
@@ -131,15 +129,13 @@ export function isEqual(customWorkbook, initialWorkbook) {
         return false;
       }
 
-      console.log(value1, value2);
-
       if (value1 !== value2) {
         return false;
       }
 
       return true;
     });
-    console.log('CHECK', a);
+
     return a;
   });
 }

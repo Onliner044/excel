@@ -64,7 +64,7 @@ function* fetchReadFile(params) {
     const sheets = workbook.Sheets;
 
     const data = {};
-    sheetsNames.map((name) => {
+    sheetsNames.forEach((name) => {
       const sheet = sheets[name];
 
       const cells = {};
